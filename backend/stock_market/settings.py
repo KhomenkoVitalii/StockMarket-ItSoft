@@ -56,6 +56,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTH_USER_MODEL = 'market_api_app.AppUser'
+
 ROOT_URLCONF = 'stock_market.urls'
 
 TEMPLATES = [
