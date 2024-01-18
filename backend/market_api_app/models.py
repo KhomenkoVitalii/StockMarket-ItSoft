@@ -17,11 +17,11 @@ class AppUserManager(BaseUserManager):
         # TODO: IMPLEMENT PHONE_NUMBER VALIDATION
         return phone_number
 
-    def create_user(self, first_name, second_name, phone_number, birthday, email, password=None):
+    def create_user(self, first_name, last_name, phone_number, birthday, email, password=None):
         if not first_name:
             raise ValueError('A first name is required!')
-        if not second_name:
-            raise ValueError('A second name is required!')
+        if not last_name:
+            raise ValueError('A last name is required!')
         if not email:
             raise ValueError('An email is required!')
         if not password:
@@ -33,24 +33,24 @@ class AppUserManager(BaseUserManager):
 
         user = self.model(email=email,
                           first_name=first_name,
-                          second_name=second_name,
+                          last_name=last_name,
                           phone_number=norm_phone_number,
                           birthday=norm_birthdate)
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, first_name, second_name, phone_number, birthday, email, password=None):
+    def create_superuser(self, first_name, last_name, phone_number, birthday, email, password=None):
         if not first_name:
             raise ValueError('A first name is required!')
-        if not second_name:
-            raise ValueError('A second name is required!')
+        if not last_name:
+            raise ValueError('A last name is required!')
         if not email:
             raise ValueError('An email is required!')
         if not password:
             raise ValueError('An password is required!')
 
-        user = self.create_user(first_name, second_name,
+        user = self.create_user(first_name, last_name,
                                 phone_number, birthday, email, password)
         user.is_superuser = True
         user.save()
@@ -79,7 +79,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
         'auth.Permission', related_name='app_users', blank=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'second_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number', 'birthday']
 
     objects = AppUserManager()
 
