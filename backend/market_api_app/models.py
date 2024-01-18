@@ -73,7 +73,6 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 
     created_at = models.DateField(auto_now_add=True, null=False)
 
-    # Add related_name to avoid clashes with auth.Group's reverse accessor
     groups = models.ManyToManyField(
         'auth.Group', related_name='app_users', blank=True)
     user_permissions = models.ManyToManyField(
