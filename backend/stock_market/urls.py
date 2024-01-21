@@ -16,8 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+from market_api_app.views import UserRegisterView, UserLoginView, UserLogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
+    path('auth/login/', UserLoginView.as_view(), name='login'),
+    path('auth/logout/', UserLogoutView.as_view(), name='logout'),
+    path('auth/register/', UserRegisterView.as_view(), name='register')
 ]
+
+router = routers.SimpleRouter()
