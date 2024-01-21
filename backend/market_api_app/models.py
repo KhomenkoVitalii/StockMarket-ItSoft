@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, Permission, Group
+from django.db.models import Q
 
 order_type_choices = [('BUY', 'Buy'), ('SELL', 'Sell')]
 order_status_choices = [('ACTIVE', 'Active'), ('EXECUTED', 'Executed')]
@@ -17,13 +18,19 @@ class AppUserManager(BaseUserManager):
         # TODO: IMPLEMENT PHONE_NUMBER VALIDATION
         return phone_number
 
-    def create_user(self, first_name, last_name, phone_number, birthday, email, password=None):
+    def create_user(self, first_name, last_name, username, phone_number, birthday, email, password=None, **kwargs):
         if not first_name:
             raise ValueError('A first name is required!')
         if not last_name:
             raise ValueError('A last name is required!')
         if not email:
             raise ValueError('An email is required!')
+        if not phone_number:
+            raise ValueError('An phone number is required!')
+        if not birthday:
+            raise ValueError('An birthday is required!')
+        if not username:
+            raise ValueError('An username is required!')
         if not password:
             raise ValueError('An password is required!')
 
@@ -31,29 +38,44 @@ class AppUserManager(BaseUserManager):
         norm_phone_number = self.normalize_phone_number(phone_number)
         norm_birthdate = self.validate_birthdate(birthday)
 
+        # Check if the email is already in use
+        is_email_in_use = self.filter(Q(email=email)).exists()
+
+        if is_email_in_use:
+            raise ValueError(f'The email address "{email}" is already in use!')
+
         user = self.model(email=email,
                           first_name=first_name,
                           last_name=last_name,
+                          username=username,
                           phone_number=norm_phone_number,
                           birthday=norm_birthdate)
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, first_name, last_name, phone_number, birthday, email, password=None):
+    def create_superuser(self, first_name, last_name, username, phone_number, birthday, email, password=None, **kwargs):
         if not first_name:
             raise ValueError('A first name is required!')
         if not last_name:
             raise ValueError('A last name is required!')
         if not email:
             raise ValueError('An email is required!')
+        if not phone_number:
+            raise ValueError('An phone number is required!')
+        if not birthday:
+            raise ValueError('An birthday is required!')
+        if not username:
+            raise ValueError('An username is required!')
         if not password:
             raise ValueError('An password is required!')
 
-        user = self.create_user(first_name, last_name,
-                                phone_number, birthday, email, password)
+        user = self.create_user(first_name, last_name, username,
+                                phone_number, birthday, email, password, **kwargs)
         user.is_superuser = True
+        user.is_staff = True
         user.save()
+
         return user
 
 
@@ -65,6 +87,8 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 
     first_name = models.CharField(max_length=50, null=False)
     last_name = models.CharField(max_length=50, null=False)
+
+    username = models.CharField(max_length=100, null=False, unique=True)
 
     birthday = models.DateField(null=False)
 
@@ -79,7 +103,8 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
         'auth.Permission', related_name='app_users', blank=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number', 'birthday']
+    REQUIRED_FIELDS = ['first_name', 'last_name',
+                       'phone_number', 'birthday', 'username']
 
     objects = AppUserManager()
 
