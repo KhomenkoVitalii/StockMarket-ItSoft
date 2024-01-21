@@ -10,23 +10,21 @@ UserModel = get_user_model()
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserModel
+        model = AppUser
         fields = '__all__'
 
-    def create(self, clean_data):
-        user_obj = UserModel.objects.create_user(first_name=clean_data['first_name'],
-                                                 last_name=clean_data['last_name'],
-                                                 phone_number=clean_data['phone_number'],
-                                                 birthday=clean_data['birthday'],
-                                                 email=clean_data['email'],
-                                                 password=clean_data['password'])
-        user_obj.save()
-        return user_obj
+    def create(self, validated_data):
+        user = AppUser.objects.create_user(**validated_data)
+        return user
 
 
 class UserLoginSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     password = serializers.CharField()
+
+    class Meta:
+        model = UserModel
+        fields = ('email', 'password')
 
     def check_user(self, clean_data):
         user = authenticate(
