@@ -17,14 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from market_api_app.views import UserRegisterView, UserLoginView, UserLogoutView
+from market_api_app.views import *
+
+router = routers.SimpleRouter()
+
+router.register(r'orders', OrderViewSet, basename='orders')
+router.register(r'transactions', TransactionViewSet, basename='transactions')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('auth/login/', UserLoginView.as_view(), name='login'),
     path('auth/logout/', UserLogoutView.as_view(), name='logout'),
-    path('auth/register/', UserRegisterView.as_view(), name='register')
+    path('auth/register/', UserRegisterView.as_view(), name='register'),
+    path('api/', include((router.urls, 'market_app_api'), namespace='api')),
 ]
-
-router = routers.SimpleRouter()
