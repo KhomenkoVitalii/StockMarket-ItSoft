@@ -43,3 +43,39 @@ class UserSerializer(serializers.ModelSerializer):
         model = UserModel
         fields = ('email', 'first_name', 'last_name',
                   'birthday', 'phone_number')
+
+
+class MarketInstrumentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MarketInstrument
+        fields = '__all__'
+
+
+class IndustrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Industry
+        fields = '__all__'
+
+
+class StockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stock
+        fields = '__all__'
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = '__all__'
+
+
+class MarketDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MarketData
+        fields = '__all__'
