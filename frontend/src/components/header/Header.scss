@@ -1,0 +1,75 @@
+@use '../../assets/styles/variables';
+
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 24px;
+    background-color: variables.$secondaryColor;
+    row-gap: 20px;
+
+    .logoWrapper {
+        display: flex;
+        align-items: center;
+        column-gap: 12px;
+
+        .logoIcon {
+            min-height: 40px;
+            min-width: 40px;
+        }
+
+        .logoText {
+            font-size: 30px;
+        }
+    }
+
+    .userWrapper {
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+
+        .profileIcon {
+            min-height: 40px;
+            min-width: 40px;
+            color: variables.$quandaryColor;
+        }
+
+        .linksWrapper {
+            display: flex;
+            column-gap: 3px;
+
+            .links {
+                color: variables.$quandaryColor;
+                font-family: variables.$primaryFont;
+                font-size: 20px;
+                text-decoration: none;
+                margin: 0;
+            }
+        }
+
+        .profileName {
+            color: variables.$tertiaryColor;
+            font-family: variables.$primaryFont;
+            font-size: 16px;
+        }
+
+        .exitIcon {
+            min-height: 24px;
+            min-width: 24px;
+            color: variables.$quandaryColor;
+        }
+
+        .marketWrapper {
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .icon {
+                min-height: 24px;
+                min-width: 24px;
+                color: variables.$quandaryColor;
+            }
+        }
+    }
+}
