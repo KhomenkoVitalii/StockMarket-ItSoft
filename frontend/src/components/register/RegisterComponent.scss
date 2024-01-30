@@ -1,0 +1,70 @@
+@use '../../assets/styles/variables';
+
+.loginWrapper {
+    display: flex;
+    justify-content: center;
+    margin: 36px 0;
+
+    .loginBlock {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-self: center;
+        max-width: 400px;
+        padding: 24px;
+        row-gap: 10px;
+        border-radius: 10px;
+        background-color: variables.$secondaryColor;
+
+
+        .title {
+            font-size: 30px;
+            text-align: center;
+        }
+
+        .input {
+            border-color: variables.$secondaryColor;
+            color: variables.$tertiaryColor;
+
+            .MuiInputBase-input {
+                font-family: variables.$primaryFont;
+                color: variables.$tertiaryColor;
+            }
+
+            label {
+                font-family: variables.$primaryFont;
+                color: variables.$tertiaryColor;
+            }
+
+            .MuiInput-underline::before {
+                border-bottom-color: variables.$primaryColor;
+            }
+
+            .MuiInput-underline:after {
+                border-bottom-color: variables.$tertiaryColor;
+            }
+        }
+
+        .button {
+            color: variables.$primaryColor;
+            background-color: variables.$tertiaryColor;
+            font-family: variables.$primaryFont;
+            align-self: center;
+            min-width: 30%;
+            margin: 8px 0 14px 0;
+        }
+
+        .errorMessage {
+            width: 100%;
+            text-align: center;
+            color: variables.$quandaryColor;
+            font-size: 18px;
+        }
+
+        .additionalLinks {
+            display: flex;
+            justify-content: space-between;
+            color: variables.$tertiaryColor;
+        }
+    }
+}
