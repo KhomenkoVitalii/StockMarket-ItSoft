@@ -1,29 +1,18 @@
-"""
-URL configuration for stock_market project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from market_api_app.views import *
+from market_api_app.views import (
+    OrderViewSet, TransactionViewSet, UserLoginView,
+    UserLogoutView, UserRegisterView, OrderListView,
+    MarketInstrumentListView, AppUserListView
+)
 
+# Define a router for DRF viewsets
 router = routers.SimpleRouter()
-
 router.register(r'orders', OrderViewSet, basename='orders')
 router.register(r'transactions', TransactionViewSet, basename='transactions')
 
+# Define urlpatterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
@@ -31,4 +20,8 @@ urlpatterns = [
     path('auth/logout/', UserLogoutView.as_view(), name='logout'),
     path('auth/register/', UserRegisterView.as_view(), name='register'),
     path('api/', include((router.urls, 'market_app_api'), namespace='api')),
+    path('api/orders/', OrderListView.as_view(), name='order-list'),
+    path('api/instruments/', MarketInstrumentListView.as_view(),
+         name='instrument-list'),
+    path('api/users/', AppUserListView.as_view(), name='user-list'),
 ]
