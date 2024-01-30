@@ -1,14 +1,16 @@
+from django.contrib.auth import get_user_model
+from django.contrib.auth import login, logout
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse
-from django.contrib.auth import get_user_model, login, logout
+from rest_framework import generics, status, permissions, viewsets
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import viewsets, status, permissions
-from market_api_app.serializers import UserSerializer, UserLoginSerializer, UserRegisterSerializer
-
-from django.shortcuts import get_object_or_404
-from market_api_app.models import MarketInstrument, Stock, Order, Transaction
-from market_api_app.serializers import OrderSerializer, TransactionSerializer
+from rest_framework.views import APIView
+from .models import Order, Transaction, MarketInstrument, AppUser
+from .serializers import (
+    UserRegisterSerializer, UserLoginSerializer,
+    OrderSerializer, MarketInstrumentSerializer, AppUserSerializer
+)
 
 User = get_user_model()
 
@@ -18,24 +20,38 @@ class UserRegisterView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = UserRegisterSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
+        try:
+            serializer.is_valid(raise_exception=True)
             user = serializer.save()
-            if user:
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except ValidationError as e:
+            return Response({'error': e.messages}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserLoginView(APIView):
     permission_classes = [permissions.AllowAny]
-    authentication_classes = [SessionAuthentication,]
 
     def post(self, request, *args, **kwargs):
         data = request.data
         serializer = UserLoginSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
+        try:
+            serializer.is_valid(raise_exception=True)
             user = serializer.check_user(data)
             login(request, user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+
+            response_data = {
+                'message': 'Login successful',
+                'user': {
+                    'email': user.email,
+                    'firstName': user.first_name,
+                    'lastName': user.last_name,
+                    'birthday': user.birthday
+                }
+            }
+
+            return Response(response_data, status=status.HTTP_200_OK)
+        except ValidationError as e:
+            return Response({'error': e.messages}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class UserLogoutView(APIView):
@@ -106,6 +122,21 @@ class OrderViewSet(viewsets.ModelViewSet):
 
         buy_order.save()
         sell_order.save()
+
+
+class OrderListView(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
+class MarketInstrumentListView(generics.ListAPIView):
+    queryset = MarketInstrument.objects.all()
+    serializer_class = MarketInstrumentSerializer
+
+
+class AppUserListView(generics.ListAPIView):
+    queryset = AppUser.objects.all()
+    serializer_class = AppUserSerializer
 
 
 class TransactionViewSet(viewsets.ReadOnlyModelViewSet):
