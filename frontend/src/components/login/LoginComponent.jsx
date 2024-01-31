@@ -33,7 +33,11 @@ const LoginComponent = () => {
 
         if (response.status == 'ok') {
             console.log('User authorized!');
-            loginUserInAppContext(response.body.user)
+            const userData = {
+                ...response.body.user,
+                token: response.body.token
+            }
+            loginUserInAppContext(userData)
         } else {
             setErrorMessage(response.message);
         }

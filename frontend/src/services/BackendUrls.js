@@ -4,9 +4,10 @@ const BackendUrls = Object.freeze({
     LOGIN: default_path + 'auth/login/',
     REGISTER: default_path + 'auth/register/',
     LOGOUT: default_path + 'auth/logout/',
-    PLACE_ORDER: default_path + 'api/order/',
-    GET_ORDERS: default_path + 'api/order/',
-    GET_ORDER: default_path + 'api/order',
+    PLACE_ORDER: default_path + 'api/orders/',
+    GET_ORDERS: default_path + 'api/orders/',
+    GET_ORDER: default_path + 'api/orders',
+    TEST_TOKEN: default_path + 'api/token/'
 });
 
 export default BackendUrls;

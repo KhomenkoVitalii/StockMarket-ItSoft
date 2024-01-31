@@ -8,7 +8,8 @@ export const defaultUserData = {
     firstName: null,
     lastName: null,
     image: null,
-    is_login: false
+    is_login: false,
+    token: null
 };
 
 export const AppContext = createContext(defaultUserData);
