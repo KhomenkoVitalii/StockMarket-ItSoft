@@ -3,13 +3,14 @@ from django.contrib.auth import login, logout
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from rest_framework import generics, status, permissions, viewsets
-from rest_framework.authentication import SessionAuthentication
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
 from .models import Order, Transaction, MarketInstrument, AppUser
 from .serializers import (
     UserRegisterSerializer, UserLoginSerializer,
-    OrderSerializer, MarketInstrumentSerializer, AppUserSerializer
+    OrderSerializer, MarketInstrumentSerializer, UserSerializer, TransactionSerializer
 )
 
 User = get_user_model()
@@ -23,7 +24,8 @@ class UserRegisterView(APIView):
         try:
             serializer.is_valid(raise_exception=True)
             user = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            token = Token.objects.create(user=user)
+            return Response({"token": token.key, "user": serializer.data}, status=status.HTTP_201_CREATED)
         except ValidationError as e:
             return Response({'error': e.messages}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -37,10 +39,12 @@ class UserLoginView(APIView):
         try:
             serializer.is_valid(raise_exception=True)
             user = serializer.check_user(data)
+            token, created = Token.objects.get_or_create(user=user)
             login(request, user)
 
             response_data = {
                 'message': 'Login successful',
+                'token': token.key,
                 'user': {
                     'email': user.email,
                     'firstName': user.first_name,
@@ -54,7 +58,17 @@ class UserLoginView(APIView):
             return Response({'error': e.messages}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+class TestToken(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        return Response({'message': "passed!"})
+
+
 class UserLogoutView(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+
     def post(self, request):
         logout(request)
         return Response(status=status.HTTP_200_OK)
@@ -125,21 +139,25 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 
 class OrderListView(generics.ListCreateAPIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
 
 class MarketInstrumentListView(generics.ListAPIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
     queryset = MarketInstrument.objects.all()
     serializer_class = MarketInstrumentSerializer
 
 
 class AppUserListView(generics.ListAPIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
     queryset = AppUser.objects.all()
-    serializer_class = AppUserSerializer
+    serializer_class = UserSerializer
 
 
 class TransactionViewSet(viewsets.ReadOnlyModelViewSet):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
 

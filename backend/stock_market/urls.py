@@ -4,7 +4,7 @@ from rest_framework import routers
 from market_api_app.views import (
     OrderViewSet, TransactionViewSet, UserLoginView,
     UserLogoutView, UserRegisterView, OrderListView,
-    MarketInstrumentListView, AppUserListView
+    MarketInstrumentListView, AppUserListView, TestToken
 )
 
 # Define a router for DRF viewsets
@@ -19,6 +19,7 @@ urlpatterns = [
     path('auth/login/', UserLoginView.as_view(), name='login'),
     path('auth/logout/', UserLogoutView.as_view(), name='logout'),
     path('auth/register/', UserRegisterView.as_view(), name='register'),
+    path('auth/token/', TestToken.as_view(), name='token'),
     path('api/', include((router.urls, 'market_app_api'), namespace='api')),
     path('api/orders/', OrderListView.as_view(), name='order-list'),
     path('api/instruments/', MarketInstrumentListView.as_view(),
