@@ -1,0 +1,52 @@
+@use '../../assets/styles/variables';
+
+.order {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 10px;
+    row-gap: 10px;
+    background-color: variables.$quandaryColor;
+
+    .order_title {
+        padding: 0;
+        margin: 0;
+        font-size: 20px;
+        text-align: center;
+        font-family: variables.$primaryFont;
+        color: variables.$primaryColor !important;
+    }
+
+    .order_details {
+        display: flex;
+        justify-content: space-around;
+
+        .order_details_type {
+            display: flex;
+            align-self: center;
+            vertical-align: middle;
+            font-weight: 500;
+            font-size: 24px;
+            color: variables.$primaryColor;
+        }
+
+        .order_details_data {
+            display: flex;
+            flex-direction: column;
+
+            .data {
+                color: variables.$primaryColor;
+            }
+        }
+    }
+
+    .order_extras {
+        display: flex;
+        justify-content: space-between;
+
+        .order_extras_data {
+            font-size: 14px;
+            color: variables.$primaryColor;
+        }
+    }
+}

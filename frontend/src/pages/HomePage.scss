@@ -1,0 +1,14 @@
+@use '../assets/styles/variables';
+
+.description {
+    display: flex;
+    flex-direction: column;
+
+    margin: 24px 15%;
+    padding: 24px;
+
+    color: variables.$quandaryColor;
+    background-color: variables.$secondaryColor;
+
+    border-radius: 10px;
+}

@@ -1,0 +1,27 @@
+@use './variables';
+
+html,
+body,
+.root {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: variables.$primaryColor;
+    overflow-x: hidden;
+}
+
+a {
+    color: variables.$quandaryColor;
+    font-family: variables.$primaryFont;
+    text-decoration: none;
+    margin: 0;
+}
+
+p {
+    color: variables.$quandaryColor;
+    font-family: variables.$primaryFont;
+    margin: 0;
+}

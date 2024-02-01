@@ -21,7 +21,6 @@ Develop a web application that simulates a stock market limit order book, using 
     - Design and Implement RESTful API endpoints for adding orders and retrieving the order book and transaction history.
 3. **Data Model**:
     - Design models to store orders and transactions. The models should adhere to the rest of the requirements.
-    ![ERD diagram](ERD.png)
 4. **Order Matching Logic**:
     - Implement the logic to match buy and sell orders based on price and quantity.
 5. **Order Book Rules**:
@@ -79,7 +78,9 @@ Develop a web application that simulates a stock market limit order book, using 
 
 ```python
 example.py
-# This is a skeleton of the LimitBook class. Implement the missing functionalities. You can add more functions. Names are not critical - focus on functionality.
+# This is a skeleton of the LimitBook class. 
+# Implement the missing functionalities. 
+# You can add more functions. Names are not critical - focus on functionality.
 
 class LimitBook:
     def __init__(self):
