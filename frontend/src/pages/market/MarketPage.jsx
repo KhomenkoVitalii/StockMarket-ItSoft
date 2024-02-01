@@ -15,10 +15,10 @@ const MarketPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (state.is_login === false) {
+        if (state.user?.is_login === false) {
             navigate(RoutesEnum.LOGIN);
         }
-    }, [dispatch]);
+    }, [state]);
 
     return (
         <main className="main">

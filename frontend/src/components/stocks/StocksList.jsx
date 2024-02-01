@@ -1,45 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Stock from "../stock/Stock";
 import './StockList.scss';
-
-// Sample data for Stock
-const stocks = [
-    {
-        symbol: 'AAPL',
-        name: 'Apple Inc.',
-        exchange: 'NASDAQ',
-        market_cap: 200000000000,
-        industry: { name: 'Technology', description: 'Information technology sector' }
-    },
-    {
-        symbol: 'AAPL',
-        name: 'Apple Inc.',
-        exchange: 'NASDAQ',
-        market_cap: 200000000000,
-        industry: { name: 'Technology', description: 'Information technology sector' }
-    },
-    {
-        symbol: 'AAPL',
-        name: 'Apple Inc.',
-        exchange: 'NASDAQ',
-        market_cap: 200000000000,
-        industry: { name: 'Technology', description: 'Information technology sector' }
-    },
-    {
-        symbol: 'AAPL',
-        name: 'Apple Inc.',
-        exchange: 'NASDAQ',
-        market_cap: 200000000000,
-        industry: { name: 'Technology', description: 'Information technology sector' }
-    },
-];
+import { getAllStocks } from '../../services/stocksServices';
+import { AppContext } from "../../context/AppContext";
 
 const StockList = () => {
-    const [data, setData] = useState(stocks);
+    const [data, setData] = useState(null);
+    const { state, dispatch } = useContext(AppContext)
 
     useEffect(() => {
-        //TODO: load data
-    }, [])
+        if (state.user?.token) {
+            getAllStocks(state.user.token).then((data) => {
+                setData(data.body);
+            });
+        }
+    }, [state]);
 
     return (
         <div className="stocks">
