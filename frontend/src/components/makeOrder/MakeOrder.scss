@@ -17,6 +17,12 @@
         background-color: variables.$secondaryColor;
     }
 
+    .title {
+        text-align: center;
+        color: variables.$quandaryColor;
+        font-family: variables.$primaryFont;
+    }
+
     .input {
         border-color: variables.$secondaryColor;
         color: variables.$quandaryColor;
@@ -45,14 +51,15 @@
         background-color: variables.$tertiaryColor;
         font-family: variables.$primaryFont;
         align-self: center;
-        min-width: 30%;
+        width: 100%;
         margin: 8px 0 14px 0;
     }
 
-    .errorMessage {
+    .additionalInformation {
         width: 100%;
         text-align: center;
         color: variables.$quandaryColor;
+        font-family: variables.$primaryFont;
         font-size: 18px;
     }
 }
