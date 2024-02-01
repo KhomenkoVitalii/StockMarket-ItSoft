@@ -58,6 +58,10 @@ class StockSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    stock = serializers.PrimaryKeyRelatedField(
+        source='stock_symbol', read_only=True)
+
     class Meta:
         model = Order
         fields = '__all__'

@@ -4,7 +4,7 @@ from rest_framework import routers
 from market_api_app.views import (
     OrderViewSet, TransactionViewSet, UserLoginView,
     UserLogoutView, UserRegisterView,
-    AppUserListView, TestToken
+    AppUserListView, TestToken, StocksViewSet
 )
 
 # Define a router for DRF viewsets
@@ -22,4 +22,5 @@ urlpatterns = [
     path('auth/token/', TestToken.as_view(), name='token'),
     path('api/users/', AppUserListView.as_view(), name='user-list'),
     path('api/', include((router.urls, 'market_app_api'), namespace='api')),
+    path('api/stocks/', StocksViewSet.as_view({'get': 'list'}), name='stocks')
 ]

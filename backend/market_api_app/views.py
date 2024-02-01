@@ -6,10 +6,11 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from .models import Order, Transaction, AppUser
+from .models import Order, Transaction, AppUser, Stock
 from .serializers import (
     UserRegisterSerializer, UserLoginSerializer,
-    OrderSerializer, UserSerializer, TransactionSerializer
+    OrderSerializer, UserSerializer, TransactionSerializer,
+    StockSerializer
 )
 
 User = get_user_model()
@@ -73,6 +74,12 @@ class UserLogoutView(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
+class StocksViewSet(viewsets.ReadOnlyModelViewSet):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    queryset = Stock.objects.all()
+    serializer_class = StockSerializer
+
+
 class OrderViewSet(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
@@ -80,7 +87,13 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        # Extract stock symbol from request body
+        stock_symbol = self.request.data.get('stock_symbol')
+        # Find stock instance by symbol
+        stock_instance = self.find_stock(stock_symbol)
+        # Save order with user and stock instance
+        serializer.save(user=self.request.user, stock=stock_instance)
+        # Process the order
         self.process_order(serializer.instance)
 
     def process_order(self, order):
@@ -104,7 +117,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         """
         opposite_type = 'SELL' if order.order_type == 'BUY' else 'BUY'
         return Order.objects.filter(
-            instrument=order.instrument,
+            stock=order.stock,
             order_type=opposite_type,
             price__lte=order.price
         ).order_by('price')
@@ -137,6 +150,14 @@ class OrderViewSet(viewsets.ModelViewSet):
 
         buy_order.save()
         sell_order.save()
+
+    def find_stock(self, stock_symbol):
+        try:
+            stock_instance = Stock.objects.get(symbol=stock_symbol)
+            return stock_instance
+        except Stock.DoesNotExist:
+            raise ValueError(
+                f"Stock with symbol '{stock_symbol}' does not exist.")
 
 
 class AppUserListView(generics.ListAPIView):

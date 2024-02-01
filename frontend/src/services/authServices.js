@@ -13,7 +13,6 @@ export const login = async (email, password) => {
 
         if (response.status == 200) {
             const body = await response.json();
-            console.log(body);
             return { status: 'ok', body: body }
         } else if (response.status == 401) {
             return { status: 'failed', message: "Incorrect credentials were provided!" }

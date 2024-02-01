@@ -1,67 +1,60 @@
 import BackendUrls from "./BackendUrls"
 
-export const createOrder = async (orderData) => {
+export const createOrder = async (orderData, token) => {
     try {
+        const headers = new Headers();
+        headers.append('Accept', 'application/json');
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', `Token ${token}`);
+
         const response = await fetch(BackendUrls.PLACE_ORDER, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderData),
+            headers: headers,
+            body: JSON.stringify({
+                stock_symbol: orderData.stock,
+                order_type: orderData.orderType,
+                price: orderData.price,
+                quantity: orderData.quantity
+            })
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || 'Failed to create order');
+        if (response.ok) {
+            const body = await response.json();
+            return { status: 'ok', body: body };
+        } else if (response.status === 401) {
+            console.error(await response.json());
+            return { status: 'failed', message: "Incorrect credentials were provided!" };
+        } else {
+            console.error(await response.json());
+            return { status: 'failed', message: "Uncaught error was caught!" };
         }
-
-        const responseData = await response.json();
-        return responseData;
     } catch (error) {
-        console.error('Error creating order:', error.message);
-        throw error;
+        console.error(error);
+        return { status: 'failed', message: "Crucial error was caught, please try again later!" };
     }
 };
 
-export const getAllOrders = async () => {
-    const token = localStorage.getItem('user')?.token;
-
+export const getAllOrders = async (token) => {
     try {
         const headers = new Headers();
         headers.append('Authorization', `Token ${token}`);
 
-        const response = await fetch(BackendUrls.GET_ORDERS, {
-            method: 'GET',
+        const response = await fetch(BackendUrls.ORDERS, {
+            method: "GET",
             headers: headers
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || 'Failed to fetch orders');
+        if (response.status == 200) {
+            const body = await response.json();
+            return { status: 'ok', body: body }
+        } else if (response.status == 401) {
+            return { status: 'failed', message: "Incorrect credentials were provided!" }
+        } else {
+            console.error(await response.json());
+            return { status: 'failed', message: "Uncaught error was cached!" }
         }
-
-        const ordersData = await response.json();
-        return ordersData;
-    } catch (error) {
-        console.error('Error fetching orders:', error.message);
-        throw error;
-    }
-};
-
-
-
-export const getOrderById = async (orderId) => {
-    try {
-        const response = await fetch(`${BackendUrls.GET_ORDER}${orderId}/`);
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || 'Failed to fetch order');
-        }
-
-        const orderData = await response.json();
-        return orderData;
-    } catch (error) {
-        console.error(`Error fetching order with ID ${orderId}:`, error.message);
-        throw error;
+    } catch (e) {
+        console.error(e);
+        return { status: 'failed', message: "Crucial error was cached, please, try again later!" }
     }
 };
