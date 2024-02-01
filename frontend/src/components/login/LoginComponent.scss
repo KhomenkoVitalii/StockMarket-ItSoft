@@ -24,16 +24,16 @@
 
         .input {
             border-color: variables.$secondaryColor;
-            color: variables.$tertiaryColor;
+            color: variables.$quandaryColor;
 
             .MuiInputBase-input {
                 font-family: variables.$primaryFont;
-                color: variables.$tertiaryColor;
+                color: variables.$quandaryColor;
             }
 
             label {
                 font-family: variables.$primaryFont;
-                color: variables.$tertiaryColor;
+                color: variables.$quandaryColor;
             }
 
             .MuiInput-underline::before {
@@ -41,7 +41,7 @@
             }
 
             .MuiInput-underline:after {
-                border-bottom-color: variables.$tertiaryColor;
+                border-bottom-color: variables.$quandaryColor;
             }
         }
 

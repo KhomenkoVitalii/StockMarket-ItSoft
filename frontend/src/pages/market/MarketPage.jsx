@@ -1,20 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { createOrder, getAllOrders } from "../../services/orderServices";
+import Order from "../../components/order/Order";
+import Orders from "../../components/orders/OrdersList";
+import Stock from "../../components/stock/Stock";
+import StockList from "../../components/stocks/StocksList";
+import { AppContext } from '../../context/AppContext';
+import { useNavigate } from "react-router-dom";
+import RoutesEnum from "../../routes/RoutesEnum";
+import './MarketPage.scss';
 
 const MarketPage = () => {
-    const handle1 = async () => {
-        console.log(await getAllOrders());
-    }
+    const [data, setData] = useState('')
+    const { state, dispatch } = useContext(AppContext)
+    const navigate = useNavigate();
 
     useEffect(() => {
-        handle1();
-    }, [])
+        if (state.is_login === false) {
+            navigate(RoutesEnum.LOGIN);
+        }
+    }, [dispatch]);
 
     return (
-        <div>
-            <h1>Market Orders</h1>
-
-        </div>
+        <main className="main">
+            <h1 className="mainHeaderText">Market Orders</h1>
+            <div className="marketDataBlock">
+                <span className="dataWrapper">
+                    <StockList />
+                </span>
+                <span className="dataWrapper">
+                    <Orders />
+                </span>
+            </div>
+        </main>
     );
 };
 

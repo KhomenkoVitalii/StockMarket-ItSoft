@@ -1,0 +1,32 @@
+@use '../../assets/styles/variables';
+
+.main {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    margin: 24px 15%;
+    padding: 10px;
+    background-color: variables.$secondaryColor;
+
+    .mainHeaderText {
+        text-align: center;
+        font-family: variables.$primaryFont;
+        color: variables.$quandaryColor;
+    }
+
+    .marketDataBlock {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        column-gap: 24px;
+        box-sizing: border-box;
+        width: 100%;
+
+        .dataWrapper {
+            display: flex;
+            width: 100%;
+            width: calc(50% - 24px);
+
+        }
+    }
+}

@@ -5,6 +5,8 @@ import HomePage from '../pages/HomePage';
 import LoginComponent from '../components/login/LoginComponent';
 import RegisterComponent from '../components/register/RegisterComponent';
 import MarketPage from '../pages/market/MarketPage';
+import MakeOrder from '../components/makeOrder/MakeOrder';
+import Profile from '../pages/profile/Profile';
 
 const AppRouter = createBrowserRouter([
     {
@@ -26,6 +28,14 @@ const AppRouter = createBrowserRouter([
             path: RoutesEnum.MARKET,
             element: <MarketPage />
         },
+        {
+            path: RoutesEnum.MAKE_ORDER,
+            element: <MakeOrder />
+        },
+        {
+            path: RoutesEnum.PROFILE,
+            element: <Profile />
+        }
         ],
     }
 ]);
