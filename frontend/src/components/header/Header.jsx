@@ -30,7 +30,9 @@ const Header = () => {
             <div className='userWrapper'>
                 {state?.user?.is_login ? (
                     <>
-                        {state.user.image ? (<img href={state.user.image} alt="user's avatar" />) : (<AccountCircleIcon className='profileIcon' />)}
+                        <Link className='marketWrapper' to={RoutesEnum.PROFILE}>
+                            {state.user.image ? (<img href={state.user.image} alt="user's avatar" />) : (<AccountCircleIcon className='profileIcon' />)}
+                        </Link>
                         <span className='profileName'>{`${state.user.firstName} ${state.user.lastName}`}</span>
                         <Link className='marketWrapper' to={RoutesEnum.MARKET}><StoreIcon className='icon' /></Link>
                         <ExitToAppIcon className='exitIcon' onClick={onLogoutButtHandler} />
