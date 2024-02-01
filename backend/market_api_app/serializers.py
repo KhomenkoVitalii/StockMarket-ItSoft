@@ -45,12 +45,6 @@ class UserSerializer(serializers.ModelSerializer):
                   'birthday', 'phone_number')
 
 
-class MarketInstrumentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MarketInstrument
-        fields = '__all__'
-
-
 class IndustrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Industry
@@ -72,10 +66,4 @@ class OrderSerializer(serializers.ModelSerializer):
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = '__all__'
-
-
-class MarketDataSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MarketData
         fields = '__all__'

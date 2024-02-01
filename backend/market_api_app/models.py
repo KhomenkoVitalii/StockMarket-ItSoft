@@ -112,43 +112,28 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
         return self.username
 
 
-class MarketInstrument(models.Model):
-    symbol = models.CharField(max_length=50, unique=True)
-    # example: 'AAPL'
-    name = models.CharField(max_length=100)
-    # example: 'Apple Inc.'
-
-    def __str__(self):
-        return self.symbol
-
-
 class Industry(models.Model):
-    # Entity which represent industry with which 'stock' related
     name = models.CharField(max_length=100, unique=True)
-    # example: 'Technology'
     description = models.CharField(max_length=500)
-    # additional info about industry
 
     def __str__(self):
         return self.name
 
 
 class Stock(models.Model):
-    instrument = models.OneToOneField(
-        MarketInstrument, on_delete=models.CASCADE, primary_key=True)
+    symbol = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=100)
     exchange = models.CharField(max_length=50)
-    # Indicates the exchange on which these stocks are traded (for example, NASDAQ, NYSE).
     market_cap = models.DecimalField(max_digits=15, decimal_places=2)
-    # Market capitalization of the company issuing the stocks.
     industry = models.ForeignKey(Industry, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.instrument.name} ({self.exchange})"
+        return f"{self.name} ({self.exchange})"
 
 
 class Order(models.Model):
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
-    instrument = models.ForeignKey(MarketInstrument, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     order_type = models.CharField(max_length=4, choices=order_type_choices)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField()
@@ -166,15 +151,5 @@ class Transaction(models.Model):
         max_length=4, choices=transaction_type_choices)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> str:
-        return f"{self.transaction_type} {self.quantity} for {self.price * self.quantity}$"
-
-
-class MarketData(models.Model):
-    instrument = models.ForeignKey(MarketInstrument, on_delete=models.CASCADE)
-    current_price = models.DecimalField(max_digits=10, decimal_places=2)
-    volume = models.PositiveIntegerField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-
     def __str__(self):
-        return f"{self.instrument.symbol} - Price: {self.current_price}, Volume: {self.volume}, Timestamp: {self.timestamp}"
+        return f"{self.transaction_type} {self.quantity} for {self.price * self.quantity}$"

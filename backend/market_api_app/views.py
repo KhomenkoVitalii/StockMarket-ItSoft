@@ -1,16 +1,15 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login, logout
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse
 from rest_framework import generics, status, permissions, viewsets
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from .models import Order, Transaction, MarketInstrument, AppUser
+from .models import Order, Transaction, AppUser
 from .serializers import (
     UserRegisterSerializer, UserLoginSerializer,
-    OrderSerializer, MarketInstrumentSerializer, UserSerializer, TransactionSerializer
+    OrderSerializer, UserSerializer, TransactionSerializer
 )
 
 User = get_user_model()
@@ -75,6 +74,8 @@ class UserLogoutView(APIView):
 
 
 class OrderViewSet(viewsets.ModelViewSet):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
@@ -136,18 +137,6 @@ class OrderViewSet(viewsets.ModelViewSet):
 
         buy_order.save()
         sell_order.save()
-
-
-class OrderListView(generics.ListCreateAPIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-
-
-class MarketInstrumentListView(generics.ListAPIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    queryset = MarketInstrument.objects.all()
-    serializer_class = MarketInstrumentSerializer
 
 
 class AppUserListView(generics.ListAPIView):
