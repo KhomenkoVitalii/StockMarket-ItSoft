@@ -3,17 +3,29 @@
 .orders {
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
-    padding: 10px;
     border-radius: 10px;
     width: 100%;
 
-    .title {
+    .orders_title {
         padding: 0;
         margin: 0;
         font-size: 20px;
         text-align: center;
         font-family: variables.$primaryFont;
         color: variables.$quandaryColor;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .orders {
+        padding: 10px;
+        row-gap: 30px;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .orders {
+        padding: 20px;
+        row-gap: 20px;
     }
 }

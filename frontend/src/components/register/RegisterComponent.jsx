@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, TextField } from "@mui/material";
 import RoutesEnum from "../../routes/RoutesEnum";
@@ -20,8 +20,14 @@ const RegisterComponent = () => {
     });
     const [isSendingRequest, setIsSendingRequest] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const { dispatch } = useContext(AppContext);
+    const { state, dispatch } = useContext(AppContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (state.user?.is_login) {
+            navigate(RoutesEnum.HOME);
+        }
+    }, [state.user?.is_login]);
 
     const loginUserInAppContext = (data) => {
         dispatch(loginAction(data));
@@ -49,7 +55,13 @@ const RegisterComponent = () => {
 
             if (response.status === 'ok') {
                 console.log('User registered!');
-                loginUserInAppContext(formData);
+                const userData = {
+                    ...response.body.user,
+                    firstName: response.body.user.first_name,
+                    lastName: response.body.user.last_name,
+                    token: response.body.token
+                }
+                loginUserInAppContext(userData);
             } else {
                 setErrorMessage(response.message);
             }

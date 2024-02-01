@@ -1,5 +1,5 @@
 import { Button, TextField } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import RoutesEnum from "../../routes/RoutesEnum";
 import { Link, useNavigate } from 'react-router-dom';
 import './LoginComponent.scss';
@@ -14,6 +14,12 @@ const LoginComponent = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const { state, dispatch } = useContext(AppContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (state.user?.is_login) {
+            navigate(RoutesEnum.HOME);
+        }
+    }, [state.user?.is_login]);
 
     const loginUserInAppContext = (data) => {
         dispatch(loginAction(data));

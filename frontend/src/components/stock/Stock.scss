@@ -1,7 +1,8 @@
 @use '../../assets/styles/variables';
 
-.stockBlock {
+.stock {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: column;
     padding: 10px;
     border-radius: 10px;
@@ -10,39 +11,44 @@
     background-color: variables.$quandaryColor;
 
 
-    .stockBlockHeader {
+    .stock_header {
         display: flex;
         column-gap: 14px;
 
-        .stockBlockHeaderText {
+        .stock_header_text {
             font-family: variables.$primaryFont;
             color: variables.$primaryColor !important;
         }
     }
 
-    .stockBlockInfo {
+    .stock_info {
         display: flex;
         justify-content: space-between;
 
-        .stockBlockInfoText {
+        .stock_info_text {
             font-family: variables.$primaryFont;
             color: variables.$primaryColor !important;
         }
     }
 
-    .makeOrderButtWrapper {
+    .stock_order {
         display: flex;
         justify-content: flex-end;
-        position: relative;
-        top: -85px;
-        right: -20px;
 
-        .button {
+        .stock_order_submit {
             color: variables.$quandaryColor;
             background-color: variables.$tertiaryColor;
             font-family: variables.$primaryFont;
             font-weight: 500;
             align-self: center;
         }
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .stock_order {
+        position: relative;
+        top: -85px;
+        right: -25px;
     }
 }

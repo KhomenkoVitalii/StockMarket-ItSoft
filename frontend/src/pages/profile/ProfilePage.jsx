@@ -25,7 +25,7 @@ const ProfilePage = () => {
             <h1 className="title">My transactions:</h1>
             {(data && data.length > 0) ? data.map((item, index) => (
                 <Transaction data={item} key={index} />
-            )) : (null)}
+            )) : (<p className="infoMessage">There will be your transactions!</p>)}
         </div>
     )
 }

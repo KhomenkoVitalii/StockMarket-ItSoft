@@ -1,13 +1,10 @@
 import React, { useContext } from 'react'
 import './Header.scss'
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Link } from 'react-router-dom';
-import RoutesEnum from '../../routes/RoutesEnum';
 import { AppContext } from '../../context/AppContext';
 import { logoutAction } from '../../context/reducer/AppReducer';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import StoreIcon from '@mui/icons-material/Store';
+import UserMenu from '../usermenu/UserMenu';
+import AuthMenu from '../authmenu/AuthMenu';
 
 const Header = () => {
     const { state, dispatch } = useContext(AppContext);
@@ -18,35 +15,18 @@ const Header = () => {
 
     return (
         <header className='header'>
-            <div className='logoWrapper'>
+            <div className='header_logo'>
                 <a href="/">
-                    <LocalFireDepartmentIcon className='logoIcon' />
+                    <LocalFireDepartmentIcon className='header_logo_icon' />
                 </a>
-                <p className='logoText'>StockMarket</p>
+                <p className='header_logo_text'>StockMarket</p>
             </div>
-            <div className='links'>
-
-            </div>
-            <div className='userWrapper'>
-                {state?.user?.is_login ? (
-                    <>
-                        <Link className='marketWrapper' to={RoutesEnum.PROFILE}>
-                            {state.user.image ? (<img href={state.user.image} alt="user's avatar" />) : (<AccountCircleIcon className='profileIcon' />)}
-                        </Link>
-                        <span className='profileName'>{`${state.user.firstName} ${state.user.lastName}`}</span>
-                        <Link className='marketWrapper' to={RoutesEnum.MARKET}><StoreIcon className='icon' /></Link>
-                        <ExitToAppIcon className='exitIcon' onClick={onLogoutButtHandler} />
-                    </>
-                ) : (
-                    <>
-                        <AccountCircleIcon className='profileIcon' />
-                        <div className='linksWrapper'>
-                            <Link to={RoutesEnum.LOGIN} className='links'>Sign-in</Link>
-                            <span className='links'>/</span>
-                            <Link to={RoutesEnum.REGISTER} className='links'>Sign-up</Link>
-                        </div>
-                    </>
-                )}
+            <div className='header_links'>
+                {state?.user?.is_login ?
+                    <UserMenu state={state} onLogoutButtHandler={onLogoutButtHandler} />
+                    :
+                    <AuthMenu />
+                }
             </div>
         </header>
     )

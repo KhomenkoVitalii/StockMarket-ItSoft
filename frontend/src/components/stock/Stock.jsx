@@ -15,19 +15,19 @@ const Stock = ({ data }) => {
     }
 
     return (
-        <div className="stockBlock">
-            <div className="stockBlockHeader">
-                <p className="stockBlockHeaderText">{data.industry.name}</p>
-                <p className="stockBlockHeaderText">{data.symbol}</p>
-                <p className="stockBlockHeaderText">{data.name}</p>
+        <div className="stock">
+            <div className="stock_header">
+                <p className="stock_header_text">{data.industry.name}</p>
+                <p className="stock_header_text">{data.symbol}</p>
+                <p className="stock_header_text">{data.name}</p>
             </div>
-            <div className="stockBlockInfo">
-                <p className="stockBlockInfoText">Exchange: {data.exchange}</p>
-                <p className="stockBlockInfoText">Market cap: {beautyMarketCap(data.market_cap)}</p>
+            <div className="stock_info">
+                <p className="stock_info_text">Exchange: {data.exchange}</p>
+                <p className="stock_info_text">Market cap: {beautyMarketCap(data.market_cap)}</p>
             </div>
-            <div className='makeOrderButtWrapper'>
+            <div className='stock_order'>
                 <Button variant="contained"
-                    className='button'
+                    className='stock_order_submit'
                     onClick={onMakeOrderButtHandler}>
                     Make order
                 </Button>
