@@ -1,4 +1,4 @@
-const default_path = 'http://127.0.0.1:8000/';
+const default_path = 'http://0.0.0.0:8000/';
 
 const BackendUrls = Object.freeze({
     LOGIN: default_path + 'auth/login/',

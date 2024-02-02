@@ -6,7 +6,7 @@ const HomePage = () => {
     const [markdownContent, setMarkdownContent] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:5173/README.md')
+        fetch('http://localhost:8080/README.md')
             .then(response => response.text())
             .then(text => setMarkdownContent(text))
             .catch(error => console.error('Error fetching Markdown file:', error));
