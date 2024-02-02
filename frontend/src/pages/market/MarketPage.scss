@@ -1,0 +1,57 @@
+@use '../../assets/styles/variables';
+
+.main {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: variables.$secondaryColor;
+
+    .mainHeaderText {
+        text-align: center;
+        font-family: variables.$primaryFont;
+        color: variables.$quandaryColor;
+    }
+
+    .marketDataBlock {
+        display: flex;
+        justify-content: space-between;
+        box-sizing: border-box;
+        width: 100%;
+
+        .dataWrapper {
+            display: flex;
+
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .main {
+        margin: 24px;
+        padding: 10px;
+
+        .marketDataBlock {
+            flex-direction: column;
+            row-gap: 40px;
+
+            .dataWrapper {
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .main {
+        margin: 24px 15%;
+        padding: 10px;
+
+        .marketDataBlock {
+            column-gap: 24px;
+
+            .dataWrapper {
+                width: calc(50% - 24px);
+            }
+        }
+    }
+}

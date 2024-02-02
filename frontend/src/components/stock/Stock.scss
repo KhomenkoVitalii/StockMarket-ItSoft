@@ -1,0 +1,54 @@
+@use '../../assets/styles/variables';
+
+.stock {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    row-gap: 10px;
+    background-color: variables.$quandaryColor;
+
+
+    .stock_header {
+        display: flex;
+        column-gap: 14px;
+
+        .stock_header_text {
+            font-family: variables.$primaryFont;
+            color: variables.$primaryColor !important;
+        }
+    }
+
+    .stock_info {
+        display: flex;
+        justify-content: space-between;
+
+        .stock_info_text {
+            font-family: variables.$primaryFont;
+            color: variables.$primaryColor !important;
+        }
+    }
+
+    .stock_order {
+        display: flex;
+        justify-content: flex-end;
+
+        .stock_order_submit {
+            color: variables.$quandaryColor;
+            background-color: variables.$tertiaryColor;
+            font-family: variables.$primaryFont;
+            font-weight: 500;
+            align-self: center;
+        }
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .stock_order {
+        position: relative;
+        top: -85px;
+        right: -25px;
+    }
+}

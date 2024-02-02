@@ -1,0 +1,20 @@
+@use '../../assets/styles/variables';
+
+
+.transactionsBlock {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    margin: 24px 15%;
+
+    .title {
+        text-align: center;
+        color: variables.$quandaryColor;
+        font-family: variables.$primaryFont;
+    }
+
+    .infoMessage {
+        text-align: center;
+        font-size: 20px;
+    }
+}
