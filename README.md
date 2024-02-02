@@ -2,6 +2,58 @@
 
 **Home Assignment: Full Stack Developer Position**
 
+## Api
+* Install requirements:
+```
+pip install -r requirements.txt
+```
+* Update requirements:
+```
+pip freeze > requirements.txt
+```
+* Run local:
+```
+python manage.py runserver
+```
+* Run docker-compose:
+```
+docker-compose up --build
+```
+* Make migrations:
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### Set environment variables:
+**list of environment variables which should be set:**<br>
+```
+DATABASE_HOST
+DATABASE_NAME
+DATABASE_USER
+DATABASE_PASSWORD
+DATABASE_PORT
+DEBUG
+SECRET_KEY
+```
+if running with docker: 
+DATABASE_HOST should be set as name of container with db<br>
+
+**Linux:**
+```
+export SOME_VARIABLE=some_value
+```
+
+### Endpoints:
+```
+http://0.0.0.0:8000/api/transactions/
+http://0.0.0.0:8000/api/orders/
+http://0.0.0.0:8000/auth/stocks/'
+http://0.0.0.0:8000/auth/login/',
+http://0.0.0.0:8000/auth/logout/',
+http://0.0.0.0:8000/auth/register/',
+http://0.0.0.0:8000/auth/token/'
+```
 ---
 
 **Objective:**
@@ -21,7 +73,6 @@ Develop a web application that simulates a stock market limit order book, using 
     - Design and Implement RESTful API endpoints for adding orders and retrieving the order book and transaction history.
 3. **Data Model**:
     - Design models to store orders and transactions. The models should adhere to the rest of the requirements.
-    ![ERD diagram](ERD.png)
 4. **Order Matching Logic**:
     - Implement the logic to match buy and sell orders based on price and quantity.
 5. **Order Book Rules**:
@@ -65,72 +116,3 @@ Develop a web application that simulates a stock market limit order book, using 
 3. Ensure that all commits are well-structured and meaningful, showing the progression of your work.
 
 ---
-
-**Evaluation Criteria**:
-
-- **Functionality**: The application should fulfill all the primary requirements and work without errors.
-- **Solution**: The solution to the problem will be evaluated.
-- **Code Quality**: The code should be clean, well-organized, and adhere to best practices.
-- **UI/UX**: The provided UI should be intuitive and user-friendly.
-- **Testing**: Presence and quality of unit tests.
-- **Documentation**: Clarity and completeness of the **`README.md`** and any additional documentation.
-
-**Unimplemented LimitBook Class**:
-
-```python
-example.py
-# This is a skeleton of the LimitBook class. Implement the missing functionalities. You can add more functions. Names are not critical - focus on functionality.
-
-class LimitBook:
-    def __init__(self):
-        # TODO: Implement initialization logic
-
-    def add_order(self, stock_name, order_type, price, quantity):
-        # TODO: Implement order adding logic
-
-    def match_orders(self):
-        # TODO: Implement order matching logic
-
-    def get_order_book(self):
-        # TODO: Implement method to retrieve current state of order book
-
-    def get_transaction_history(self):
-        # TODO: Implement method to retrieve transaction history
-
-```
-
-### **Example**
-
-1. **Buy Order**: Stock: AAPL, Price: $150, Quantity: 100
-2. **Sell Order**: Stock: AAPL, Price: $155, Quantity: 50
-3. **Sell Order**: Stock: AAPL, Price: $150, Quantity: 70
-
-Order Book State After Each Order:
-
-State After Order 1:
-
-| Buy Orders (AAPL) | Sell Orders (AAPL) |
-| --- | --- |
-| 100 @ $150 | - |
-
-*Comment*: First buy order added, no matching sell order.
-
-State After Order 2:
-
-| Buy Orders (AAPL) | Sell Orders (AAPL) |
-| --- | --- |
-| 100 @ $150 | 50 @ $155 |
-
-*Comment*: Sell order added, no match as sell price is higher than buy price.
-
-State After Order 3:
-
-| Buy Orders (AAPL) | Sell Orders (AAPL) |
-| --- | --- |
-| 30 @ $150 | 50 @ $155 |
-
-*Comment*: Sell order at $150 matches with buy order. 70 shares sold, 30 shares remaining in buy order.
-
-**Explanation of Matches:**
-
-- **Match in Order 3**: The sell order for 70 AAPL shares at $150 directly matches with the existing buy order for 100 shares at $150. As a result, 70 shares are sold, and the buy order is reduced to 30 shares. The sell order is fully executed and thus removed from the order book.
